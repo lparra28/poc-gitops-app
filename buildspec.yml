@@ -25,8 +25,9 @@ phases:
       # Build Docker Image
       - echo "Build started on `date`"
       - echo "Building the Docker image..."
-      - docker build --cache-from $REPOSITORY_URI:$TAG -t $IMAGE_REPO_NAME:$TAG .
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$TAG
+      #- docker build --cache-from $REPOSITORY_URI:$TAG -t $IMAGE_REPO_NAME:$TAG .
+      - docker build --tag $REPOSITORY_URI:$TAG .
+      - docker push $REPOSITORY_URI:$TAG
   post_build:
     commands:
       # Push Docker Image to ECR Repository
