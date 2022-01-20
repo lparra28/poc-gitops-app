@@ -5,6 +5,8 @@ phases:
       - echo "Install Phase - Nothing to do using latest Amazon Linux Docker Image for CodeBuild which has all AWS Tools - https://github.com/aws/aws-codebuild-docker-images/blob/master/al2/x86_64/standard/3.0/Dockerfile"
   pre_build:
       commands:
+        - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
+        - echo $REPOSITORY_URI
         # Docker Image Tag with Date Time & Code Buiild Resolved Source Version
         - TAG="$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
         # Update Image tag in our Kubernetes Deployment Manifest        
@@ -18,7 +20,6 @@ phases:
         - echo "Login in to Amazon ECR..."
         #- aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
         - $(aws ecr get-login --no-include-email)
-        - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
         - export KUBECONFIG=$HOME/.kube/config
   build:
     commands:
