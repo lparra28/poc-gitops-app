@@ -18,8 +18,8 @@ phases:
         - aws --version
         # Login to ECR Registry for docker to push the image to ECR Repository
         - echo "Login in to Amazon ECR..."
-        #- aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-        - $(aws ecr get-login --no-include-email)
+        - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+        #- $(aws ecr get-login --no-include-email)
         - export KUBECONFIG=$HOME/.kube/config
   build:
     commands:
@@ -28,13 +28,12 @@ phases:
       - echo "Building the Docker image..."
       #- docker build --cache-from $REPOSITORY_URI:$TAG -t $IMAGE_REPO_NAME:$TAG .
       - docker build --tag $REPOSITORY_URI:$TAG .
-      - docker push $REPOSITORY_URI:$TAG
   post_build:
     commands:
       # Push Docker Image to ECR Repository
       - echo "Build completed on `date`"
       - echo "Pushing the Docker image to ECR Repository"
-      # - docker push $REPOSITORY_URI:$TAG
+      - docker push $REPOSITORY_URI:$TAG
       - echo "Docker Image Push to ECR Completed"    
       # Extracting AWS Credential Information using STS Assume Role for kubectl
       #- echo "Setting Environment Variables related to AWS CLI for Kube Config Setup"          
