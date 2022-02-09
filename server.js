@@ -6,7 +6,7 @@ var server = http.createServer(function(request, response) {
   response.write("<html>");
   response.write("<head><title>My App On Amazon EKS</title><style>body { background-color: cyan; }</style></head>");
   response.write("<body>");
-  response.write("<h1 style=\"text-align:center\">AWS CI/CD para EKS con Arquitectura Team!!</h1>");
+  response.write("<h1 style=\"text-align:center\">AWS CI/CD CodePipeline para EKS</h1>");
   response.write("</body>");
   response.write("</html>");
   response.end();
